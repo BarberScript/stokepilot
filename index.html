@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Stock Copilot — простой помощник по акциям</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="wrap">
+        <header class="hero">
+            <div>
+                <div class="brand">Stock Copilot</div>
+                <div class="subtitle">Учитесь разбираться в акциях: простые квизы, подсказки и новости</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:13px;color:var(--muted)">Учебный режим — не инвестиционный совет</div>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="controls">
+                <label>Тикер: <input id="ticker" placeholder="AAPL" /></label>
+                <button id="analyze">Анализировать</button>
+                <div class="status" id="status"></div>
+                <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+                    <button id="showTips" class="card"
+                        style="padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);">Study
+                        Tips</button>
+                    <button id="glossaryBtn" class="card"
+                        style="padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);">Glossary</button>
+                </div>
+            </div>
+            <div id="results"></div>
+        </div>
+
+        <div class="row">
+            <div>
+                <h2 style="margin:12px 0 8px">Простые квизы</h2>
+                <div id="quizzes" class="card quiz"></div>
+            </div>
+
+            <aside class="card learn">
+                <h4>Study Tips</h4>
+                <ul id="studyTips" class="tips">
+                    <!-- Заполняется скриптом -->
+                </ul>
+
+                <h4 style="margin-top:12px">Checklist</h4>
+                <div>
+                    <label><input type="checkbox" id="chkGoal"> Я определил цель инвестирования</label><br />
+                    <label><input type="checkbox" id="chkRisk"> Я понимаю свой риск</label><br />
+                    <label><input type="checkbox" id="chkDivers"> Диверсификация — минимум 5 позиций</label>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="card" style="margin-top:12px">
+            Небольшой учебный инструмент. Для реальных данных настройте серверный прокси с API-ключами.
+        </footer>
+    </div>
+
+    <!-- Glossary modal (простая реализация) -->
+    <div id="glossaryModal"
+        style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; background:rgba(2,6,23,0.6);">
+        <div class="card" style="max-width:680px; width:92%; position:relative;">
+            <button id="closeGloss"
+                style="position:absolute; right:12px; top:12px; background:transparent;border:none;color:var(--muted);font-weight:700;cursor:pointer">
+                ✕
+            </button>
+            <h3>Глоссарий</h3>
+            <dl>
+                <dt><strong>Market Cap</strong></dt>
+                <dd>Общая стоимость всех акций компании (price × shares outstanding).</dd>
+                <dt><strong>P/E</strong></dt>
+                <dd>Цена к прибыли — показывает, во сколько раз цена акции превышает прибыль на акцию.</dd>
+                <dt><strong>Net Income</strong></dt>
+                <dd>Чистая прибыль/убыток компании за период.</dd>
+            </dl>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
