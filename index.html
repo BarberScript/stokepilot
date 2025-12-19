@@ -1,88 +1,129 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="calculator" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="apple.ico" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      id="statusBarStyle"
+      content="white"
+    />
+    <!-- Здесь добавлен ID для удобства обращения из JavaScript -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>The Barba</title>
+  </head>
+  <body>
+    <canvas id="bgCanvas"></canvas>
+    <header>
+      <h1 class="neon-title">THE BARBA</h1>
+    </header>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Stock Copilot — простой помощник по акциям</title>
-    <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-    <div class="wrap">
-        <header class="hero">
-            <div>
-                <div class="brand">Stock Copilot</div>
-                <div class="subtitle">Учитесь разбираться в акциях: простые квизы, подсказки и новости</div>
-            </div>
-            <div style="text-align:right">
-                <div style="font-size:13px;color:var(--muted)">Учебный режим — не инвестиционный совет</div>
-            </div>
-        </header>
-
-        <div class="card">
-            <div class="controls">
-                <label>Тикер: <input id="ticker" placeholder="AAPL" /></label>
-                <button id="analyze">Анализировать</button>
-                <div class="status" id="status"></div>
-                <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
-                    <button id="showTips" class="card"
-                        style="padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);">Study
-                        Tips</button>
-                    <button id="glossaryBtn" class="card"
-                        style="padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);">Glossary</button>
-                </div>
-            </div>
-            <div id="results"></div>
+    <main>
+      <div id="mainContainer" class="glass-container">
+        <div class="input-group">
+          <label for="sum">TOTAL AMOUNT</label>
+          <input
+            type="number"
+            id="sum"
+            class="styledInput neon-input"
+            placeholder="0.00"
+            required
+            min="0"
+          />
         </div>
 
-        <div class="row">
-            <div>
-                <h2 style="margin:12px 0 8px">Простые квизы</h2>
-                <div id="quizzes" class="card quiz"></div>
-            </div>
-
-            <aside class="card learn">
-                <h4>Study Tips</h4>
-                <ul id="studyTips" class="tips">
-                    <!-- Заполняется скриптом -->
-                </ul>
-
-                <h4 style="margin-top:12px">Checklist</h4>
-                <div>
-                    <label><input type="checkbox" id="chkGoal"> Я определил цель инвестирования</label><br />
-                    <label><input type="checkbox" id="chkRisk"> Я понимаю свой риск</label><br />
-                    <label><input type="checkbox" id="chkDivers"> Диверсификация — минимум 5 позиций</label>
-                </div>
-            </aside>
+        <div class="input-group">
+          <label for="additionalValue">ADDITIONAL VALUE</label>
+          <input
+            type="number"
+            id="additionalValue"
+            class="styledInput neon-input"
+            placeholder="0.00"
+            required
+            min="0"
+          />
         </div>
 
-        <footer class="card" style="margin-top:12px">
-            Небольшой учебный инструмент. Для реальных данных настройте серверный прокси с API-ключами.
-        </footer>
-    </div>
-
-    <!-- Glossary modal (простая реализация) -->
-    <div id="glossaryModal"
-        style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; background:rgba(2,6,23,0.6);">
-        <div class="card" style="max-width:680px; width:92%; position:relative;">
-            <button id="closeGloss"
-                style="position:absolute; right:12px; top:12px; background:transparent;border:none;color:var(--muted);font-weight:700;cursor:pointer">
-                ✕
-            </button>
-            <h3>Глоссарий</h3>
-            <dl>
-                <dt><strong>Market Cap</strong></dt>
-                <dd>Общая стоимость всех акций компании (price × shares outstanding).</dd>
-                <dt><strong>P/E</strong></dt>
-                <dd>Цена к прибыли — показывает, во сколько раз цена акции превышает прибыль на акцию.</dd>
-                <dt><strong>Net Income</strong></dt>
-                <dd>Чистая прибыль/убыток компании за период.</dd>
-            </dl>
+        <div class="input-group">
+          <label for="hours">HOURS WORKED</label>
+          <input
+            type="number"
+            id="hours"
+            class="styledInput neon-input"
+            placeholder="0"
+            required
+            min="0"
+          />
         </div>
-    </div>
 
-    <script src="app.js"></script>
-</body>
+        <div class="nav-buttons">
+          <button class="btn-magic" onclick="calculateSalary()">CALCULATE</button>
+        </div>
 
+        <div id="resultsArea">
+           <div id="resultsContainer">
+            <ul id="resultsList"></ul>
+          </div>
+          <div id="resultsContainer2">
+            <ul id="resultsList2"></ul>
+          </div>
+          <div id="resultsContainer3">
+            <ul id="resultsList3"></ul>
+          </div>
+          
+          <div id="hourlySalaryResultContainer">
+            <p id="hourlySalaryResult1"></p>
+            <p id="hourlySalaryResult2"></p>
+          </div>
+
+          <div id="statsContainer" class="container">
+              <h2>INSIGHTS</h2>
+              <div class="stat-item">
+                  <span>PROFIT TREND:</span>
+                  <span id="profitTrend" class="stat-value">LOADING...</span>
+              </div>
+              <div class="stat-item">
+                  <span>BEST WEEK:</span>
+                  <div class="stat-right">
+                      <span id="bestWeek" class="stat-value">LOADING...</span>
+                      <div id="bestWeekDate" class="stat-date"></div>
+                  </div>
+              </div>
+              <div class="stat-item">
+                  <span>WORST WEEK:</span>
+                  <div class="stat-right">
+                      <span id="worstWeek" class="stat-value">LOADING...</span>
+                      <div id="worstWeekDate" class="stat-date"></div>
+                  </div>
+              </div>
+              <div class="stat-item">
+                  <span>VACATION REC:</span>
+                  <span id="vacationRec" class="stat-value">LOADING...</span>
+              </div>
+          </div>
+
+          <div id="chartContainer">
+            <canvas id="myChart" width="400" height="200"></canvas>
+          </div>
+          <p class="copyright">Copyright @ BarberScript</p>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="script.js"></script>
+    <script src="supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
 </html>
