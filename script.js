@@ -83,8 +83,33 @@ async function calculateSalary() {
   await updateChart();
 }
 // Получение элементов DOM
+// Получение элементов DOM
 const resultsList = document.getElementById("resultsList");
-const hourlySalaryResult = document.getElementById("hourlySalaryResult");
+const resultsList2 = document.getElementById("resultsList2");
+const resultsList3 = document.getElementById("resultsList3");
+const hourlySalaryResult1 = document.getElementById("hourlySalaryResult1");
+const hourlySalaryResult2 = document.getElementById("hourlySalaryResult2");
+
+// Функция для получения всех данных для статистики
+async function fetchResults() {
+  try {
+    const { data, error } = await supabaseClient
+      .from("peon")
+      .select("*")
+      .order("id", { ascending: false });
+
+    if (error) {
+      console.error("Supabase Error:", error.message);
+      return;
+    }
+
+    if (data) {
+      calculateStats(data);
+    }
+  } catch (error) {
+    console.error("Error in fetchResults:", error.message);
+  }
+}
 
 // Функция для отображения результатов
 async function displayResults() {
@@ -122,6 +147,13 @@ async function displayResults() {
       const secondHourlySalary = secondEntry.hourlySalary.toFixed(2);
       hourlySalaryResult1.textContent = `${secondHourlySalary}`;
     }
+    // Helper to format date safely
+    const formatDate = (dateStr, fallbackStr) => {
+        if (!dateStr && !fallbackStr) return 'N/A';
+        const d = new Date(dateStr || fallbackStr);
+        return isNaN(d.getTime()) ? 'N/A' : d.toLocaleDateString();
+    };
+
     // Вывод результатов в список
     data.forEach((entry, index) => {
       const listItem = document.createElement("li");
@@ -133,7 +165,8 @@ async function displayResults() {
         listItem.classList.add("redunderline");
       }
 
-      // Формирование содержимого элемента списка
+      const displayDate = formatDate(entry.date, entry.created_at);
+
       // Формирование содержимого элемента списка
       listItem.innerHTML = `
         <div class="result-card">
@@ -163,6 +196,12 @@ async function displayResults() {
               <span class="result-value">${entry.ADtotal.toFixed(2)}</span>
             </div>
           </div>
+          <div class="result-row">
+            <div class="result-item">
+               <span class="result-label" style="font-size: 10px; opacity: 0.7;">DATE</span>
+               <span class="result-value" style="font-size: 12px; font-weight: 400;">${displayDate}</span>
+            </div>
+          </div>
         </div>
       `;
 
@@ -183,8 +222,23 @@ async function displayResults() {
 }
 
 function createChart(results) {
+  if (typeof Chart === 'undefined') {
+    console.error("Chart.js is not loaded. Cannot create chart.");
+    return;
+  }
+  const canvas = document.getElementById("myChart");
+  if (!canvas) {
+      console.error("Canvas element 'myChart' not found");
+      return;
+  }
+  console.log("createChart executing. Data points:", results.length);
   const labels = results.map(
-    (result) => new Date(result.date).toLocaleDateString()
+    (result) => {
+      const dateStr = result.date || result.created_at;
+      if (!dateStr) return 'N/A';
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? 'N/A' : d.toLocaleDateString();
+    }
   );
   const data = results.map((result) =>
     result.result ? result.result.toFixed(2) : 0
@@ -194,8 +248,8 @@ function createChart(results) {
 
   // Create gradient
   const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, 'rgba(0, 243, 255, 0.5)');
-  gradient.addColorStop(1, 'rgba(0, 243, 255, 0)');
+  gradient.addColorStop(0, 'rgba(10, 132, 255, 0.2)'); // Blue with low opacity
+  gradient.addColorStop(1, 'rgba(10, 132, 255, 0)');
 
   if (typeof myChart === "object" && myChart !== null) {
     myChart.destroy();
@@ -211,65 +265,65 @@ function createChart(results) {
           fill: true,
           backgroundColor: gradient,
           tension: 0.4,
-          borderColor: "#00f3ff", // Cyan
+          borderColor: "#0A84FF", // Blue accent
           borderWidth: 2,
-          pointRadius: 4,
-          pointBackgroundColor: "#fff",
-          pointBorderColor: "#00f3ff",
+          pointRadius: 0, // Clean look, no points by default
+          pointHoverRadius: 4,
+          pointBackgroundColor: "#0A84FF",
+          pointBorderColor: "#fff",
         }
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
       scales: {
         y: {
           beginAtZero: true,
-          display: true, // Show Y axis for value context
-          grid: { color: "rgba(255, 255, 255, 0.05)" },
-          ticks: { color: "rgba(255, 255, 255, 0.5)" }
+          display: true,
+          grid: { 
+            color: "rgba(255, 255, 255, 0.05)",
+            drawBorder: false
+          },
+          ticks: { 
+            color: "#8e8e93",
+            font: {
+              family: "'Inter', sans-serif",
+              size: 11
+            }
+          }
         },
-        x: {
-          display: false, // Hide X axis labels to keep it clean
-          grid: { display: false },
-        },
+        // ... rest of options ...
       },
       plugins: {
-        legend: {
-          display: false, // Hide legend since it's just one line
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#fff',
-          bodyColor: '#fff',
-          borderColor: 'rgba(255, 255, 255, 0.2)',
-          borderWidth: 1
-        }
+        // ... plugins ...
       },
     },
   });
 }
 
-async function fetchResults() {
-  const { data, error } = await supabaseClient
-    .from("peon")
-    .select("sum, hours, result, date, ADtotal, additionalValue")
-    .order("id", { ascending: false })
-    .limit(50); // Increased limit for stats
 
-  if (error) {
-    console.error("Error fetching data from Supabase:", error.message);
-  } else {
-    const recentData = data.slice(0, 10);
-    createChart(recentData.reverse());
-    calculateStats(data);
-  }
-}
 
 function calculateStats(data) {
-  if (!data || data.length === 0) return;
+  // ... best/worst logic ...
+
+  // Robust date formatter for stats
+  const formatDate = (dateStr) => {
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? 'N/A' : d.toLocaleDateString();
+  };
+
+  if (!data || data.length === 0) {
+      document.getElementById("bestWeek").textContent = "N/A";
+      document.getElementById("worstWeek").textContent = "N/A";
+      document.getElementById("vacationRec").textContent = "N/A";
+      document.getElementById("profitTrend").textContent = "N/A";
+      return;
+  }
 
   // Best and Worst Week
   let maxResult = -Infinity;
@@ -278,6 +332,7 @@ function calculateStats(data) {
   let worstWeek = null;
 
   data.forEach((entry) => {
+    if (typeof entry.result !== 'number') return;
     if (entry.result > maxResult) {
       maxResult = entry.result;
       bestWeek = entry;
@@ -290,12 +345,20 @@ function calculateStats(data) {
 
   if (bestWeek) {
     document.getElementById("bestWeek").textContent = `$${maxResult.toFixed(2)}`;
-    document.getElementById("bestWeekDate").textContent = new Date(bestWeek.date).toLocaleDateString();
+    const bestDate = bestWeek.date || bestWeek.created_at;
+    document.getElementById("bestWeekDate").textContent = bestDate ? formatDate(bestDate) : 'N/A';
+  } else {
+    document.getElementById("bestWeek").textContent = "N/A";
+    document.getElementById("bestWeekDate").textContent = "";
   }
 
   if (worstWeek) {
     document.getElementById("worstWeek").textContent = `$${minResult.toFixed(2)}`;
-    document.getElementById("worstWeekDate").textContent = new Date(worstWeek.date).toLocaleDateString();
+    const worstDate = worstWeek.date || worstWeek.created_at;
+    document.getElementById("worstWeekDate").textContent = worstDate ? formatDate(worstDate) : 'N/A';
+  } else {
+    document.getElementById("worstWeek").textContent = "N/A";
+    document.getElementById("worstWeekDate").textContent = "";
   }
 
   // Vacation Recommendation (Lowest Average Month)
@@ -303,8 +366,10 @@ function calculateStats(data) {
   const monthCounts = {};
 
   data.forEach((entry) => {
-    if (!entry.date) return;
-    const date = new Date(entry.date);
+    const dateStr = entry.date || entry.created_at;
+    if (!dateStr) return;
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return; // Skip invalid dates
     const month = date.toLocaleString("default", { month: "long" });
 
     if (!monthTotals[month]) {
@@ -324,6 +389,11 @@ function calculateStats(data) {
       minAvg = avg;
       worstMonth = month;
     }
+  }
+
+  if (worstMonth === "N/A") {
+      document.getElementById("vacationRec").textContent = "N/A";
+      return; 
   }
 
   // Profit Trend Calculation
@@ -349,19 +419,33 @@ function calculateStats(data) {
 }
 
 async function updateChart() {
-  const { data, error } = await supabaseClient
-    .from("peon")
-    .select("sum, hours, result, date, ADtotal, additionalValue")
-    .order("id", { ascending: false }) // Сортировка по ID в порядке возрастания
-    .limit(10);
+  try {
+    if (typeof supabaseClient === 'undefined') {
+        console.error("Supabase client not initialized");
+        return;
+    }
 
-  if (error) {
-    console.error("Error fetching data from Supabase:", error.message);
-  } else {
-    createChart(data.reverse()); // обращаем массив данных перед созданием графика
+    const { data, error } = await supabaseClient
+        .from("peon")
+        .select("sum, hours, result, date, ADtotal, additionalValue")
+        .order("id", { ascending: false }) // Сортировка по ID в порядке возрастания
+        .limit(10);
+
+    if (error) {
+        console.error("Error fetching data from Supabase:", error.message);
+    } else if (data) {
+        console.log("updateChart: Data fetched successfully", data.length);
+        const recentData = data.slice(0, 10);
+        createChart(recentData.reverse());
+    }
+  } catch (err) {
+      console.error("Unexpected error in updateChart:", err);
   }
 }
 
 window.onload = function () {
   fetchResults();
+  displayResults();
+  updateChart();
 };
+

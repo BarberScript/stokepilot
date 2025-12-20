@@ -3,11 +3,11 @@
 const supabaseUrl = "https://klnvriypvcrmkhnzjyrk.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsbnZyaXlwdmNybWtobnpqeXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwNzE1NTAsImV4cCI6MjA3NzY0NzU1MH0.zpR99E_iaKSUxzk1OniCIY7O5YFwdxZwW4nqKZWtUSM";
+
 const { createClient } = supabase;
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
-// Отображение результатов при загрузке страницы
-displayResults();
+// Отображение результатов при загрузке страницы перенесено в script.js window.onload
 
 async function saveDataToSupabase(
   sum,
@@ -21,7 +21,7 @@ async function saveDataToSupabase(
   additionalNalog,
 ) {
   const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleString();
+  const formattedDate = currentDate.toISOString();
 
   const { data, error } = await supabaseClient.from("peon").upsert([
     {

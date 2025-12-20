@@ -6,37 +6,28 @@
     <meta name="description" content="calculator" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link rel="icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" href="apple.ico" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       id="statusBarStyle"
-      content="white"
-    />
-    <!-- Здесь добавлен ID для удобства обращения из JavaScript -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
+      content="black-translucent"
     />
     <title>The Barba</title>
   </head>
   <body>
-    <canvas id="bgCanvas"></canvas>
-    <header>
-      <h1 class="neon-title">THE BARBA</h1>
-    </header>
+    <!-- <canvas id="bgCanvas"></canvas> REMOVED for minimal design -->
+    <!-- Header removed for minimal design -->
 
     <main>
-      <div id="mainContainer" class="glass-container">
+      <div id="mainContainer" class="container">
         <div class="input-group">
           <label for="sum">TOTAL AMOUNT</label>
           <input
             type="number"
             id="sum"
-            class="styledInput neon-input"
+            class="styledInput"
             placeholder="0.00"
             required
             min="0"
@@ -48,7 +39,7 @@
           <input
             type="number"
             id="additionalValue"
-            class="styledInput neon-input"
+            class="styledInput"
             placeholder="0.00"
             required
             min="0"
@@ -60,7 +51,7 @@
           <input
             type="number"
             id="hours"
-            class="styledInput neon-input"
+            class="styledInput"
             placeholder="0"
             required
             min="0"
@@ -72,7 +63,7 @@
         </div>
 
         <div id="resultsArea">
-           <div id="resultsContainer">
+          <div id="resultsContainer">
             <ul id="resultsList"></ul>
           </div>
           <div id="resultsContainer2">
@@ -81,36 +72,37 @@
           <div id="resultsContainer3">
             <ul id="resultsList3"></ul>
           </div>
-          
+
           <div id="hourlySalaryResultContainer">
             <p id="hourlySalaryResult1"></p>
             <p id="hourlySalaryResult2"></p>
           </div>
 
           <div id="statsContainer" class="container">
-              <h2>INSIGHTS</h2>
-              <div class="stat-item">
-                  <span>PROFIT TREND:</span>
-                  <span id="profitTrend" class="stat-value">LOADING...</span>
+            <h2>INSIGHTS</h2>
+            <div class="stat-item">
+              <span>PROFIT TREND:</span>
+              <span id="profitTrend" class="stat-value">LOADING...</span>
+            </div>
+            <div class="stat-item">
+              <span>BEST WEEK:</span>
+              <div class="stat-right">
+                <span id="bestWeek" class="stat-value">LOADING...</span>
+                <div id="bestWeekDate" class="stat-date"></div>
               </div>
-              <div class="stat-item">
-                  <span>BEST WEEK:</span>
-                  <div class="stat-right">
-                      <span id="bestWeek" class="stat-value">LOADING...</span>
-                      <div id="bestWeekDate" class="stat-date"></div>
-                  </div>
+            </div>
+            <div class="stat-item">
+              <span>WORST WEEK:</span>
+              <div class="stat-right">
+                <span id="worstWeek" class="stat-value">LOADING...</span>
+                <div id="worstWeekDate" class="stat-date"></div>
               </div>
-              <div class="stat-item">
-                  <span>WORST WEEK:</span>
-                  <div class="stat-right">
-                      <span id="worstWeek" class="stat-value">LOADING...</span>
-                      <div id="worstWeekDate" class="stat-date"></div>
-                  </div>
-              </div>
-              <div class="stat-item">
-                  <span>VACATION REC:</span>
-                  <span id="vacationRec" class="stat-value">LOADING...</span>
-              </div>
+            </div>
+            <!-- Vacation Rec hidden as it might not fit minimal vibe or keeping it simple -->
+            <div class="stat-item">
+              <span>VACATION REC:</span>
+              <span id="vacationRec" class="stat-value">LOADING...</span>
+            </div>
           </div>
 
           <div id="chartContainer">
@@ -122,8 +114,8 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="script.js"></script>
-    <script src="supabase.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="supabase.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
