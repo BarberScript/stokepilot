@@ -1,121 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="calculator" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <link rel="icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      id="statusBarStyle"
-      content="black-translucent"
-    />
-    <title>The Barba</title>
-  </head>
-  <body>
-    <!-- <canvas id="bgCanvas"></canvas> REMOVED for minimal design -->
-    <!-- Header removed for minimal design -->
 
-    <main>
-      <div id="mainContainer" class="container">
-        <div class="input-group">
-          <label for="sum">TOTAL AMOUNT</label>
-          <input
-            type="number"
-            id="sum"
-            class="styledInput"
-            placeholder="0.00"
-            required
-            min="0"
-          />
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="calculator" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="/GitHub/stokepilot/ico/1.ico" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" id="statusBarStyle" content="black-translucent" />
+  <title>The Barba</title>
+</head>
 
-        <div class="input-group">
-          <label for="additionalValue">ADDITIONAL VALUE</label>
-          <input
-            type="number"
-            id="additionalValue"
-            class="styledInput"
-            placeholder="0.00"
-            required
-            min="0"
-          />
-        </div>
+<body>
+  <!-- <canvas id="bgCanvas"></canvas> REMOVED for minimal design -->
+  <!-- Header removed for minimal design -->
 
-        <div class="input-group">
-          <label for="hours">HOURS WORKED</label>
-          <input
-            type="number"
-            id="hours"
-            class="styledInput"
-            placeholder="0"
-            required
-            min="0"
-          />
-        </div>
-
-        <div class="nav-buttons">
-          <button class="btn-magic" onclick="calculateSalary()">CALCULATE</button>
-        </div>
-
-        <div id="resultsArea">
-          <div id="resultsContainer">
-            <ul id="resultsList"></ul>
-          </div>
-          <div id="resultsContainer2">
-            <ul id="resultsList2"></ul>
-          </div>
-          <div id="resultsContainer3">
-            <ul id="resultsList3"></ul>
-          </div>
-
-          <div id="hourlySalaryResultContainer">
-            <p id="hourlySalaryResult1"></p>
-            <p id="hourlySalaryResult2"></p>
-          </div>
-
-          <div id="statsContainer" class="container">
-            <h2>INSIGHTS</h2>
-            <div class="stat-item">
-              <span>PROFIT TREND:</span>
-              <span id="profitTrend" class="stat-value">LOADING...</span>
-            </div>
-            <div class="stat-item">
-              <span>BEST WEEK:</span>
-              <div class="stat-right">
-                <span id="bestWeek" class="stat-value">LOADING...</span>
-                <div id="bestWeekDate" class="stat-date"></div>
-              </div>
-            </div>
-            <div class="stat-item">
-              <span>WORST WEEK:</span>
-              <div class="stat-right">
-                <span id="worstWeek" class="stat-value">LOADING...</span>
-                <div id="worstWeekDate" class="stat-date"></div>
-              </div>
-            </div>
-            <!-- Vacation Rec hidden as it might not fit minimal vibe or keeping it simple -->
-            <div class="stat-item">
-              <span>VACATION REC:</span>
-              <span id="vacationRec" class="stat-value">LOADING...</span>
-            </div>
-          </div>
-
-          <div id="chartContainer">
-            <canvas id="myChart" width="400" height="200"></canvas>
-          </div>
-          <p class="copyright">Copyright @ BarberScript</p>
-        </div>
+  <main>
+    <div id="mainContainer" class="container">
+      <div class="input-group">
+        <label for="sum">TOTAL AMOUNT</label>
+        <input type="number" id="sum" class="styledInput" placeholder="0.00" required min="0" />
       </div>
-    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="supabase.js"></script>
-    <script src="script.js"></script>
-  </body>
+      <div class="input-group">
+        <label for="additionalValue">ADDITIONAL VALUE</label>
+        <input type="number" id="additionalValue" class="styledInput" placeholder="0.00" required min="0" />
+      </div>
+
+      <div class="input-group">
+        <label for="hours">HOURS WORKED</label>
+        <input type="number" id="hours" class="styledInput" placeholder="0" required min="0" />
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-magic" onclick="calculateSalary()">CALCULATE</button>
+      </div>
+
+      <div id="resultsArea">
+        <div id="resultsContainer">
+          <ul id="resultsList"></ul>
+        </div>
+        <div id="resultsContainer2">
+          <ul id="resultsList2"></ul>
+        </div>
+        <div id="resultsContainer3">
+          <ul id="resultsList3"></ul>
+        </div>
+
+        <div id="hourlySalaryResultContainer">
+          <p id="hourlySalaryResult1"></p>
+          <p id="hourlySalaryResult2"></p>
+        </div>
+
+        <div id="statsContainer" class="container">
+          <h2>INSIGHTS</h2>
+          <div class="stat-item">
+            <span>PROFIT TREND:</span>
+            <span id="profitTrend" class="stat-value">LOADING...</span>
+          </div>
+          <div class="stat-item">
+            <span>BEST WEEK:</span>
+            <div class="stat-right">
+              <span id="bestWeek" class="stat-value">LOADING...</span>
+              <div id="bestWeekDate" class="stat-date"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span>WORST WEEK:</span>
+            <div class="stat-right">
+              <span id="worstWeek" class="stat-value">LOADING...</span>
+              <div id="worstWeekDate" class="stat-date"></div>
+            </div>
+          </div>
+          <!-- Vacation Rec hidden as it might not fit minimal vibe or keeping it simple -->
+          <div class="stat-item">
+            <span>VACATION REC:</span>
+            <span id="vacationRec" class="stat-value">LOADING...</span>
+          </div>
+        </div>
+
+        <div id="chartContainer">
+          <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+        <p class="copyright">Copyright @ BarberScript</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="supabase.js"></script>
+  <script src="script.js"></script>
+</body>
+
 </html>
